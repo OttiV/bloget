@@ -1,4 +1,12 @@
 .App {
-  text-align: center;
-  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #1c5796; */
+  min-height: 100vh;
+}
+
+.error {
+  margin-top: 80px;
+  color: #1c5796;
 }
