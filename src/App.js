@@ -1,44 +1,67 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Post, SearchBox } from './components';
+import { url, xApiKey } from './constants';
 import './App.css';
 
 function App() {
-  const [search, setSearch] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [post, setPost] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setSearch('');
-  }, []);
-  const handleInput = event => {
-    setSearch(event.target.value);
+  const [search, setSearch] = useState('');
+  const [searchError, setSearchError] = useState('');
+
+  const validate = () => {
+    let searchError = '';
+    if (!search.includes('http' && '://' && '.')) {
+      searchError = 'invalid url';
+    }
+    if (searchError) {
+      setSearchError(searchError);
+      return false;
+    }
+    return true;
   };
-  const searchPost = () => {
-    fetch(
-      `https://t6uyyfsdg7.execute-api.eu-central-1.amazonaws.com/dev/get-url?url=https://medium.com/eli5/a-modern-setup-for-digital-products-627e8c25efca%60&url=${search}?format=jason`,
-      {
-        headers: {
-          'x-api-key': 'Vmlg5egOs04xE0KeiecGa2dKpEZek4KZ1kHpm0pm'
-        }
+
+  const handleInput = event => {
+    event.preventDefault();
+    setSearch(event.target.value);
+    setSearchError('');
+  };
+
+  const handleSubmit = () => {
+    setPost([]);
+    setError('');
+    setLoading(true);
+    fetch(`${url}${search}`, {
+      headers: {
+        'x-api-key': xApiKey
       }
-    )
+    })
       .then(response => response.json())
       .then(res => {
-        setPost(res.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error:', error);
+        if (res.message) {
+          setError(res.message);
+        } else {
+          setPost(res.data);
+          setLoading(false);
+        }
+        validate();
       });
   };
-  console.log('post', post);
+
   return (
     <div className="App">
       <SearchBox
         search={search}
+        searchError={searchError}
         handleInput={handleInput}
-        searchPost={searchPost}
+        handleSubmit={handleSubmit}
       />
-      <Post post={post} loading={loading} />
+      {error ? (
+        <div className="error">Sorry! {error}</div>
+      ) : (
+        <Post post={post} loading={loading} />
+      )}
     </div>
   );
 }
