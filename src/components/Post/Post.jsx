@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from './Loader';
+import { Loader } from './Loader';
 import { getCleanText, getTextWithPunctuation } from './helpers';
 import './Post.css';
 

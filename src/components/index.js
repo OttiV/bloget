@@ -1,2 +1,2 @@
-export { default as Post } from './Post';
-export { default as SearchBox } from './SearchBox';
+export { Post } from './Post';
+export { SearchBox } from './SearchBox';
