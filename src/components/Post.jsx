@@ -1,17 +1,13 @@
 import React from 'react';
-import { Loader } from './index';
+import Loader from './Loader';
+import { getCleanText, getTextWithPunctuation } from './helpers';
 import './Post.css';
 
 const Post = ({ post, loading }) => {
   const { siteName, textContent, title } = post;
-  const content =
-    textContent &&
-    textContent
-      .replace(/\./g, '.<br> <br>') // to add a line break after a period
-      .replace(
-        /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g,
-        ''
-      ); // to remove emojis
+  const text = textContent && getCleanText(textContent);
+  const content = text && text.map((t, i) => getTextWithPunctuation(t, i));
+
   return (
     <>
       {loading && <Loader />}
@@ -20,12 +16,7 @@ const Post = ({ post, loading }) => {
           <div className="title">
             {title} <br></br>from {siteName}
           </div>
-          <div
-            className="text"
-            dangerouslySetInnerHTML={{
-              __html: content
-            }}
-          ></div>
+          <div className="content">{content}</div>
         </div>
       )}
     </>

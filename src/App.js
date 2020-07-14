@@ -57,6 +57,7 @@ function App() {
         handleInput={handleInput}
         handleSubmit={handleSubmit}
       />
+
       {error ? (
         <div className="error">Sorry! {error}</div>
       ) : (

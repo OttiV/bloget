@@ -11,4 +11,3 @@ In the project directory, run `npm install` to install dependencies and run `npm
 ## Built With
 
 - [React](https://reactjs.org/docs/getting-started.html)
-- [Redux](https://react-redux.js.org/introduction/quick-start)
